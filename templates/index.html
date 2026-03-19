@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Help Desk Ticket System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>IT Help Desk Ticket System</h1>
+        <p class="subtitle">Track, manage, and resolve IT support requests.</p>
+
+        <div class="dashboard">
+            <div class="card total">
+                <h3>Total Tickets</h3>
+                <p>{{ total_tickets }}</p>
+            </div>
+
+            <div class="card open">
+                <h3>Open Tickets</h3>
+                <p>{{ open_tickets }}</p>
+            </div>
+
+            <div class="card resolved">
+                <h3>Resolved Tickets</h3>
+                <p>{{ resolved_tickets }}</p>
+            </div>
+
+            <div class="card alert-card">
+                <h3>High Priority Open</h3>
+                <p>{{ high_priority_tickets }}</p>
+            </div>
+        </div>
+
+        <form action="/submit" method="POST" class="ticket-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="text" name="issue" placeholder="Describe your issue" required>
+
+            <select name="priority" required>
+                <option value="">Select Priority</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+
+            <button type="submit">Submit Ticket</button>
+        </form>
+
+        <h2>Support Tickets</h2>
+
+        {% if tickets %}
+            <div class="ticket-list">
+                {% for ticket in tickets %}
+                    <div class="ticket-card">
+                        <div class="ticket-header">
+                            <h3>{{ ticket.issue }}</h3>
+                            <span class="status {{ ticket.status|lower }}">{{ ticket.status }}</span>
+                        </div>
+
+                        <p><strong>Submitted by:</strong> {{ ticket.name }}</p>
+
+                        <p>
+                            <strong>Priority:</strong>
+                            <span class="priority {{ ticket.priority|lower }}">{{ ticket.priority }}</span>
+                        </p>
+
+                        {% if ticket.status != "Resolved" %}
+                            <a href="{{ url_for('resolve_ticket', ticket_id=ticket['id']) }}" class="resolve-btn">
+                                Mark Resolved
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">No tickets submitted yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
