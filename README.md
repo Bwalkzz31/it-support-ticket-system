@@ -50,5 +50,8 @@ This project demonstrates IT support workflows, ticket management, and basic sys
 ---
 
 ## Screenshot
+
+Example dashboard showing ticket management, priority levels, and resolution tracking.
+
 ![dashboard](https://github.com/user-attachments/assets/1f56d4da-6fe8-464a-9975-464e831c6fad)
 
